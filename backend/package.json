@@ -1,0 +1,50 @@
+{
+  "name": "drools-rules-manager-backend",
+  "version": "1.0.0",
+  "description": "Node.js backend for Drools Decision Table Rules Manager",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "lint": "eslint src/**/*.js",
+    "lint:fix": "eslint src/**/*.js --fix",
+    "format": "prettier --write src/**/*.js"
+  },
+  "dependencies": {
+    "@octokit/rest": "^20.0.0",
+    "cors": "^2.8.5",
+    "express": "^4.18.0",
+    "express-rate-limit": "^7.1.0",
+    "exceljs": "^4.4.0",
+    "helmet": "^7.1.0",
+    "joi": "^17.11.0",
+    "morgan": "^1.10.0",
+    "simple-git": "^3.20.0",
+    "winston": "^3.11.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.54.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-node": "^11.1.0",
+    "jest": "^29.7.0",
+    "nodemon": "^3.0.0",
+    "prettier": "^3.1.0",
+    "supertest": "^6.3.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "keywords": [
+    "drools",
+    "decision-table",
+    "excel",
+    "rules-engine",
+    "git-integration"
+  ],
+  "author": "Drools Rules Manager Team",
+  "license": "MIT"
+}

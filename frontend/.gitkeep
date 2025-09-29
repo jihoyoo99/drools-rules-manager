@@ -1,0 +1,28 @@
+# Frontend Directory
+
+This directory will contain the Angular frontend application.
+
+## Setup Instructions
+
+1. Install Angular CLI globally:
+   ```bash
+   npm install -g @angular/cli
+   ```
+
+2. Generate the Angular project:
+   ```bash
+   ng new drools-rules-manager-frontend --routing --style=scss
+   ```
+
+3. Install dependencies:
+   ```bash
+   cd drools-rules-manager-frontend
+   npm install
+   ```
+
+4. Start development server:
+   ```bash
+   ng serve
+   ```
+
+The application will be available at http://localhost:4200
