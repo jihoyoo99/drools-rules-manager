@@ -19,9 +19,8 @@ class GitService {
   }
 
   getOctokit(token) {
-    const authToken = token || process.env.GITHUB_TOKEN;
-    if (authToken) {
-      return new Octokit({ auth: authToken });
+    if (token) {
+      return new Octokit({ auth: token });
     }
     return new Octokit();
   }
