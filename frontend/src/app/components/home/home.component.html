@@ -1,0 +1,103 @@
+<div class="home-container">
+  <mat-card class="welcome-card">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>description</mat-icon>
+        Welcome to Drools Rules Manager
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p>Manage your Drools Decision Table rules with an intuitive spreadsheet interface and Git version control.</p>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="fetch-card">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>cloud_download</mat-icon>
+        Fetch Excel from Git Repository
+      </mat-card-title>
+      <mat-card-subtitle>Primary Workflow - Fetch and edit files from your Git repository</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="gitFetchForm" (ngSubmit)="onFetchFromGit()">
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Repository Owner</mat-label>
+            <input matInput formControlName="repoOwner" placeholder="e.g., jihoyoo99">
+            <mat-icon matPrefix>person</mat-icon>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Repository Name</mat-label>
+            <input matInput formControlName="repoName" placeholder="e.g., drools-rules-manager">
+            <mat-icon matPrefix>folder</mat-icon>
+          </mat-form-field>
+        </div>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>File Path</mat-label>
+          <input matInput formControlName="filePath" placeholder="e.g., backend/test-data/sample-drools-table.xlsx">
+          <mat-icon matPrefix>insert_drive_file</mat-icon>
+        </mat-form-field>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Branch</mat-label>
+            <input matInput formControlName="branch" placeholder="main">
+            <mat-icon matPrefix>account_tree</mat-icon>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>GitHub Token (Optional)</mat-label>
+            <input matInput type="password" formControlName="token" placeholder="ghp_...">
+            <mat-icon matPrefix>vpn_key</mat-icon>
+            <mat-hint>Only required for private repositories or write operations</mat-hint>
+          </mat-form-field>
+        </div>
+
+        <div class="actions">
+          <button mat-raised-button color="primary" type="submit" [disabled]="isLoading || gitFetchForm.invalid">
+            <mat-icon>download</mat-icon>
+            Fetch from Git
+          </button>
+          <mat-spinner *ngIf="isLoading" diameter="24"></mat-spinner>
+        </div>
+      </form>
+
+      <div class="helper-text">
+        <mat-icon>info</mat-icon>
+        <span>Example: Owner: jihoyoo99, Repo: drools-rules-manager, Path: backend/test-data/sample-drools-table.xlsx</span>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-divider></mat-divider>
+
+  <mat-card class="upload-card">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>upload_file</mat-icon>
+        Upload Local Excel File
+      </mat-card-title>
+      <mat-card-subtitle>Alternative Workflow - Upload a file from your computer</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="upload-section">
+        <input type="file" #fileInput (change)="onFileSelected($event)" accept=".xlsx,.xls" style="display: none;">
+        
+        <button mat-stroked-button (click)="fileInput.click()" [disabled]="isLoading">
+          <mat-icon>attach_file</mat-icon>
+          Choose File
+        </button>
+        
+        <span class="file-name" *ngIf="selectedFile">{{ selectedFile.name }}</span>
+        
+        <button mat-raised-button color="accent" (click)="onUploadFile()" [disabled]="!selectedFile || isLoading">
+          <mat-icon>cloud_upload</mat-icon>
+          Upload & Parse
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
