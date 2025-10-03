@@ -189,4 +189,73 @@ router.post('/create-pr', async (req, res, next) => {
   }
 });
 
+router.post('/push-changes', async (req, res, next) => {
+  try {
+    const {
+      repoOwner,
+      repoName,
+      filePath,
+      fileContent,
+      newBranch,
+      commitMessage,
+      author,
+      prTitle,
+      prDescription,
+      targetBranch,
+      token
+    } = req.body;
+
+    if (!repoOwner || !repoName || !filePath || !fileContent || !newBranch || 
+        !commitMessage || !author || !prTitle || !targetBranch || !token) {
+      return res.status(400).json({
+        error: 'Bad Request',
+        message: 'Missing required fields: repoOwner, repoName, filePath, fileContent, newBranch, commitMessage, author, prTitle, targetBranch, token',
+        timestamp: new Date().toISOString()
+      });
+    }
+
+    const branchResult = await gitService.createBranchOnGitHub(
+      repoOwner,
+      repoName,
+      newBranch,
+      targetBranch,
+      token
+    );
+
+    const commitResult = await gitService.commitFileToGitHub(
+      repoOwner,
+      repoName,
+      filePath,
+      fileContent,
+      commitMessage,
+      newBranch,
+      author,
+      token
+    );
+
+    const prResult = await gitService.createPullRequestOnGitHub(
+      repoOwner,
+      repoName,
+      prTitle,
+      prDescription,
+      newBranch,
+      targetBranch,
+      token
+    );
+
+    logger.info(`Changes pushed and PR created: ${repoOwner}/${repoName}#${prResult.prNumber}`);
+
+    res.status(200).json({
+      message: 'Changes pushed successfully and PR created',
+      branchName: newBranch,
+      commitSha: commitResult.sha,
+      prNumber: prResult.prNumber,
+      prUrl: prResult.html_url,
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
 module.exports = router;

@@ -32,22 +32,46 @@
       </mat-card-title>
       <div class="spacer"></div>
       <div class="header-actions">
-        <button mat-raised-button color="primary" (click)="downloadModifiedFile()" 
-                [disabled]="!hasUnsavedChanges" *ngIf="!repoInfo?.hasToken">
-          <mat-icon>download</mat-icon>
-          Download Modified File
-        </button>
-        
-        <button mat-raised-button color="primary" (click)="openCommitDialog()" 
-                [disabled]="!canCommit()" *ngIf="repoInfo?.hasToken">
-          <mat-icon>save</mat-icon>
-          Save & Commit
-        </button>
-        <button mat-raised-button color="accent" (click)="openPullRequestDialog()" 
-                [disabled]="!canCreatePR()" *ngIf="repoInfo?.hasToken">
-          <mat-icon>merge_type</mat-icon>
-          Create Pull Request
-        </button>
+        <div class="button-group">
+          <span class="group-label">Grid Operations</span>
+          <div class="button-row">
+            <button mat-raised-button (click)="addRow()" [disabled]="!rulesData">
+              <mat-icon>add</mat-icon>
+              Add Row
+            </button>
+            <button mat-raised-button (click)="deleteSelectedRow()" [disabled]="!rulesData || !selectedRowId">
+              <mat-icon>remove</mat-icon>
+              Delete Row
+            </button>
+            <button mat-raised-button (click)="openAddColumnDialog()" [disabled]="!rulesData">
+              <mat-icon>view_column</mat-icon>
+              Add Column
+            </button>
+            <button mat-raised-button (click)="deleteColumn()" [disabled]="!rulesData">
+              <mat-icon>view_column</mat-icon>
+              Delete Column
+            </button>
+          </div>
+        </div>
+
+        <div class="button-group">
+          <span class="group-label">Git Operations</span>
+          <div class="button-row">
+            <button mat-raised-button color="primary" (click)="pullFromGit()" [disabled]="!rulesData">
+              <mat-icon>cloud_download</mat-icon>
+              Pull
+            </button>
+            <button mat-raised-button color="accent" (click)="saveLocally()" [disabled]="!hasUnsavedChanges">
+              <mat-icon>save</mat-icon>
+              Save
+            </button>
+            <button mat-raised-button color="accent" (click)="openPushDialog()" 
+                    [disabled]="!hasSavedData || !repoInfo?.hasToken">
+              <mat-icon>cloud_upload</mat-icon>
+              Push
+            </button>
+          </div>
+        </div>
       </div>
     </mat-card-header>
     <mat-card-content>
@@ -57,8 +81,10 @@
           [columnDefs]="columnDefs"
           [rowData]="rowData"
           [defaultColDef]="defaultColDef"
+          [rowSelection]="'single'"
           (gridReady)="onGridReady($event)"
           (cellValueChanged)="onCellValueChanged($event)"
+          (selectionChanged)="onSelectionChanged()"
           [domLayout]="'autoHeight'"
         >
         </ag-grid-angular>

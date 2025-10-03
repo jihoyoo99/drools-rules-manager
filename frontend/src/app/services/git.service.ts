@@ -9,7 +9,9 @@ import {
   GitCreateBranchRequest,
   GitCreateBranchResponse,
   GitCreatePRRequest,
-  GitCreatePRResponse
+  GitCreatePRResponse,
+  GitPushRequest,
+  GitPushResponse
 } from '../models/git.model';
 
 @Injectable({
@@ -47,5 +49,9 @@ export class GitService {
 
   createPullRequest(request: GitCreatePRRequest): Observable<GitCreatePRResponse> {
     return this.http.post<GitCreatePRResponse>(`${this.apiUrl}/create-pr`, request);
+  }
+
+  pushChanges(request: GitPushRequest): Observable<GitPushResponse> {
+    return this.http.post<GitPushResponse>(`${this.apiUrl}/push-changes`, request);
   }
 }

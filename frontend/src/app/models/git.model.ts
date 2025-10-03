@@ -80,3 +80,29 @@ export interface RepoInfo {
   token?: string;
   hasToken: boolean;
 }
+
+export interface GitPushRequest {
+  repoOwner: string;
+  repoName: string;
+  filePath: string;
+  fileContent: string;
+  newBranch: string;
+  commitMessage: string;
+  author: {
+    name: string;
+    email: string;
+  };
+  prTitle: string;
+  prDescription: string;
+  targetBranch: string;
+  token: string;
+}
+
+export interface GitPushResponse {
+  message: string;
+  branchName: string;
+  commitSha: string;
+  prNumber: number;
+  prUrl: string;
+  timestamp: string;
+}

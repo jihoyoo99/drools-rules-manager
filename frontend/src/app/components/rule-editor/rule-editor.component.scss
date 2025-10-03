@@ -64,7 +64,34 @@ mat-card {
   
   .header-actions {
     display: flex;
-    gap: 12px;
+    gap: 24px;
+    align-items: flex-start;
+
+    .button-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      
+      .group-label {
+        font-size: 12px;
+        font-weight: 500;
+        color: #666;
+        text-transform: uppercase;
+        margin-bottom: 4px;
+      }
+      
+      .button-row {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      
+      button {
+        mat-icon {
+          margin-right: 8px;
+        }
+      }
+    }
   }
 }
 
