@@ -12,6 +12,7 @@ import { Subject, takeUntil } from 'rxjs';
 
 import { RulesDataService } from '../../services/rules-data.service';
 import { NotificationService } from '../../services/notification.service';
+import { ExcelService } from '../../services/excel.service';
 import { DroolsTableData, DroolsColumn } from '../../models/drools-table.model';
 import { RepoInfo } from '../../models/git.model';
 import { CommitDialogComponent } from '../dialogs/commit-dialog.component';
@@ -53,6 +54,7 @@ export class RuleEditorComponent implements OnInit, OnDestroy {
   constructor(
     private rulesDataService: RulesDataService,
     private notificationService: NotificationService,
+    private excelService: ExcelService,
     private dialog: MatDialog,
     private router: Router
   ) {}
@@ -200,5 +202,28 @@ export class RuleEditorComponent implements OnInit, OnDestroy {
 
   canCreatePR(): boolean {
     return this.repoInfo !== null;
+  }
+
+  downloadModifiedFile(): void {
+    if (!this.rulesData) return;
+
+    this.notificationService.showInfo('Generating Excel file...');
+    
+    this.excelService.generateFile(this.rulesData).subscribe({
+      next: (response) => {
+        const link = document.createElement('a');
+        link.href = response.file.downloadUrl;
+        link.download = response.file.filename;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        this.rulesDataService.clearUnsavedChanges();
+        this.notificationService.showSuccess('File downloaded successfully');
+      },
+      error: (error) => {
+        this.notificationService.showError(`Download failed: ${error.message}`);
+      }
+    });
   }
 }

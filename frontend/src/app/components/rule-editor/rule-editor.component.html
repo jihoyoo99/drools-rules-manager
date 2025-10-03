@@ -32,11 +32,19 @@
       </mat-card-title>
       <div class="spacer"></div>
       <div class="header-actions">
-        <button mat-raised-button color="primary" (click)="openCommitDialog()" [disabled]="!canCommit()">
+        <button mat-raised-button color="primary" (click)="downloadModifiedFile()" 
+                [disabled]="!hasUnsavedChanges" *ngIf="!repoInfo?.hasToken">
+          <mat-icon>download</mat-icon>
+          Download Modified File
+        </button>
+        
+        <button mat-raised-button color="primary" (click)="openCommitDialog()" 
+                [disabled]="!canCommit()" *ngIf="repoInfo?.hasToken">
           <mat-icon>save</mat-icon>
           Save & Commit
         </button>
-        <button mat-raised-button color="accent" (click)="openPullRequestDialog()" [disabled]="!canCreatePR()">
+        <button mat-raised-button color="accent" (click)="openPullRequestDialog()" 
+                [disabled]="!canCreatePR()" *ngIf="repoInfo?.hasToken">
           <mat-icon>merge_type</mat-icon>
           Create Pull Request
         </button>

@@ -20,10 +20,10 @@ class GitService {
 
   getOctokit(token) {
     const authToken = token || process.env.GITHUB_TOKEN;
-    if (!authToken) {
-      throw new Error('GitHub token is required. Provide token in request or set GITHUB_TOKEN environment variable.');
+    if (authToken) {
+      return new Octokit({ auth: authToken });
     }
-    return new Octokit({ auth: authToken });
+    return new Octokit();
   }
 
   async fetchFileFromGitHub(owner, repo, filePath, ref = 'main', token = null) {

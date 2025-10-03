@@ -53,8 +53,8 @@ const generateRuleDataSchema = Joi.object({
       id: Joi.string().required(),
       index: Joi.number().required(),
       type: Joi.string().valid('NAME', 'CONDITION', 'ACTION').required(),
-      objectBinding: Joi.string().default(''),
-      patternTemplate: Joi.string().default(''),
+      objectBinding: Joi.string().allow('').default(''),
+      patternTemplate: Joi.string().allow('').default(''),
       label: Joi.string().required()
     })).required(),
     rules: Joi.array().items(Joi.object({
@@ -136,9 +136,11 @@ router.post('/parse', async (req, res, next) => {
 
 router.post('/generate', async (req, res, next) => {
   try {
-    const { error, value } = generateRuleDataSchema.validate(req.body);
+    logger.info('Generate request received');
+    const { error, value } = generateRuleDataSchema.validate(req.body, { allowUnknown: true });
     
     if (error) {
+      logger.error('Validation error:', error.details);
       return res.status(400).json({
         error: 'Validation Error',
         message: error.details[0].message,

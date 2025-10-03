@@ -78,4 +78,5 @@ export interface RepoInfo {
   filePath: string;
   branch: string;
   token?: string;
+  hasToken: boolean;
 }

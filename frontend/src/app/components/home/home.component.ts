@@ -76,7 +76,8 @@ export class HomeComponent {
           name: formValue.repoName,
           filePath: formValue.filePath,
           branch: formValue.branch || 'main',
-          token: formValue.token || undefined
+          token: formValue.token || undefined,
+          hasToken: !!formValue.token
         });
 
         this.excelService.parseFile(response.localPath).subscribe({
