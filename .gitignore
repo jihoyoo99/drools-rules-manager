@@ -137,3 +137,10 @@ dist
 # Vite logs files
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+
+# Backend uploads (test data)
+backend/uploads/
+backend/temp-files/
+
+# Angular build cache
+.angular/

@@ -1,0 +1,83 @@
+<div class="editor-container">
+  <mat-card class="info-card">
+    <mat-card-content>
+      <div class="info-row">
+        <div class="info-item" *ngIf="repoInfo">
+          <mat-icon>folder</mat-icon>
+          <span>{{ repoInfo.owner }}/{{ repoInfo.name }}</span>
+        </div>
+        <div class="info-item" *ngIf="repoInfo">
+          <mat-icon>insert_drive_file</mat-icon>
+          <span>{{ repoInfo.filePath }}</span>
+        </div>
+        <div class="info-item" *ngIf="repoInfo">
+          <mat-icon>account_tree</mat-icon>
+          <span>{{ repoInfo.branch }}</span>
+        </div>
+        <div class="spacer"></div>
+        <mat-chip *ngIf="hasUnsavedChanges" color="warn" highlighted>
+          <mat-icon>warning</mat-icon>
+          Unsaved Changes
+        </mat-chip>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="editor-card">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>edit</mat-icon>
+        Rule Editor
+        <span class="rule-count" *ngIf="rulesData">({{ rulesData.ruleTable.rules.length }} rules)</span>
+      </mat-card-title>
+      <div class="spacer"></div>
+      <div class="header-actions">
+        <button mat-raised-button color="primary" (click)="openCommitDialog()" [disabled]="!canCommit()">
+          <mat-icon>save</mat-icon>
+          Save & Commit
+        </button>
+        <button mat-raised-button color="accent" (click)="openPullRequestDialog()" [disabled]="!canCreatePR()">
+          <mat-icon>merge_type</mat-icon>
+          Create Pull Request
+        </button>
+      </div>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="grid-container">
+        <ag-grid-angular
+          class="ag-theme-material"
+          [columnDefs]="columnDefs"
+          [rowData]="rowData"
+          [defaultColDef]="defaultColDef"
+          (gridReady)="onGridReady($event)"
+          (cellValueChanged)="onCellValueChanged($event)"
+          [domLayout]="'autoHeight'"
+        >
+        </ag-grid-angular>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="metadata-card" *ngIf="rulesData">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>info</mat-icon>
+        Metadata
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="metadata-row">
+        <strong>RuleSet:</strong> {{ rulesData.metadata.ruleSet }}
+      </div>
+      <div class="metadata-row">
+        <strong>Imports:</strong> {{ rulesData.metadata.imports.join(', ') }}
+      </div>
+      <div class="metadata-row" *ngIf="rulesData.metadata.variables.length > 0">
+        <strong>Variables:</strong> {{ rulesData.metadata.variables.join(', ') }}
+      </div>
+      <div class="metadata-row" *ngIf="rulesData.metadata.notes">
+        <strong>Notes:</strong> {{ rulesData.metadata.notes }}
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

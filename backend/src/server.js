@@ -15,6 +15,7 @@ if (!fs.existsSync(uploadsDir)) {
 
 const logger = require('./utils/logger');
 const excelRoutes = require('./controllers/excelController');
+const gitRoutes = require('./controllers/gitController');
 const errorHandler = require('./middleware/errorHandler');
 
 const app = express();
@@ -39,6 +40,7 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 app.use('/api/excel', excelRoutes);
+app.use('/api/git', gitRoutes);
 
 app.get('/api/health', (req, res) => {
   res.status(200).json({
